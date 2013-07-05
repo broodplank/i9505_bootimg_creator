@@ -46,6 +46,7 @@ echo "Mounting System as RW"
 ./adb -d shell su -c 'mount -o remount rw /system'
 echo
 echo "Pushing modules to /system/lib/modules"
+adb -d shell rm -Rf /sdcard/modules
 adb -d shell mkdir /sdcard/modules
 find . -name "*.ko" -exec ./adb push {} /sdcard/modules \;
 echo 
@@ -65,7 +66,7 @@ if [ ${wipecache} == "y" ];
 then
  echo
  echo "Removing dalvik-cache.."
- ./adb shell rm /data/dalvik-cache/*
+ ./adb shell su -c 'rm -Rf /data/dalvik-cache'
  echo
 fi;
 echo "Rebooting Phone..."
