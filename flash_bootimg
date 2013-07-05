@@ -46,7 +46,11 @@ echo "Mounting System as RW"
 ./adb -d shell su -c 'mount -o remount rw /system'
 echo
 echo "Pushing modules to /system/lib/modules"
-find . -name "*.ko" -exec ./adb push {} /system/lib/modules/ \;
+adb -d shell mkdir /sdcard/modules
+find . -name "*.ko" -exec ./adb push {} /sdcard/modules \;
+echo 
+echo "Moving modules from /sdcard/modules to /system/lib/modules"
+adb -d shell su -c 'busybox mv -f /sdcard/modules/*.ko /system/lib/modules/'
 echo
 echo "Setting module permissions to RW-R-R (644)"
 ./adb -d shell su -c 'chmod 644 /system/lib/modules/*.ko'
